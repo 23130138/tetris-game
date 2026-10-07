@@ -56,3 +56,7 @@ body {
 .cell {
     background: #222;
 }
+
+.cell.filled {
+    background: red;
+}
