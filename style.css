@@ -40,3 +40,19 @@ body {
     border: none;
     cursor: pointer;
 }
+.board {
+    width: 300px;
+    height: 600px;
+    margin: 20px auto;
+    background: #111;
+    border: 2px solid white;
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    gap: 1px;
+}
+
+.cell {
+    background: #222;
+}
