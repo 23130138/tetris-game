@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #222;
+    color: white;
+}
+
+.game {
+    width: 300px;
+    margin: 30px auto;
+}
+
+.title {
+    margin-bottom: 20px;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.board {
+    width: 300px;
+    height: 600px;
+    margin: 20px 0;
+
+    background: #111;
+    border: 2px solid white;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
