@@ -23,26 +23,6 @@ body {
 .board {
     width: 300px;
     height: 600px;
-    margin: 20px 0;
-
-    background: #111;
-    border: 2px solid white;
-}
-
-.buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.button {
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-}
-.board {
-    width: 300px;
-    height: 600px;
     margin: 20px auto;
     background: #111;
     border: 2px solid white;
@@ -59,4 +39,16 @@ body {
 
 .cell.filled {
     background: red;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
 }
