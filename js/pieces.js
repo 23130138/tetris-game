@@ -26,18 +26,24 @@ let currentPiece;
 let currentX; // cột
 let currentY; // cow
 
-// chọn random 1 khối và đặt ở giữa phía trên
+// tạo khối mới
 function createPiece() {
     const names = Object.keys(pieces);
     const randomIndex = Math.floor(Math.random() * names.length);
     const randomName = names[randomIndex];
 
     currentPiece = pieces[randomName];
-
-    // Căn giữa dựa trên chiều rộng của khối
     currentX = Math.floor((width - currentPiece[0].length) / 2);
     currentY = 0;
 
+    // kết thúc nếu ko còn chỗ đặt khối ms
+    if (!canMove(currentPiece, currentX, currentY)) {
+        isGameOver = true;
+        clearInterval(timer);
+        drawBoard();
+        alert("Game over");
+        return;
+    }
     drawPiece();
 }
 
@@ -72,5 +78,17 @@ function rotatePiece() {
         currentPiece = newPiece;
         drawBoard();
         drawPiece();
+    }
+}
+
+function lockPiece() {
+    for (let y = 0; y < currentPiece.length; y++) {
+        for (let x = 0; x < currentPiece[y].length; x++) {
+            if (currentPiece[y][x] === 1) {
+                const index = (currentY + y) * width + currentX + x;
+
+                boardData[index] = "red";
+            }
+        }
     }
 }

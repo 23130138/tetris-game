@@ -1,3 +1,6 @@
+let isGameOver = false;
+let timer = null;
+
 // di chuyển sang trái
 function moveLeft() {
     if (canMove(currentPiece, currentX - 1, currentY)) {
@@ -18,15 +21,25 @@ function moveRight() {
 
 // di chuyển xuống
 function moveDown() {
+    if (isGameOver) {
+        return;
+    }
     if (canMove(currentPiece, currentX, currentY + 1)) {
         currentY++;
         drawBoard();
         drawPiece();
+    } else {
+        lockPiece();
+        drawBoard();
+        createPiece();
     }
 }
 
 // điều khiển
 document.addEventListener("keydown", function(event) {
+    if (isGameOver) {
+        return;
+    }
     if (event.key === "ArrowLeft") {
         moveLeft();
     }
@@ -44,4 +57,6 @@ document.addEventListener("keydown", function(event) {
 createBoard();
 createPiece();
 
-setInterval(moveDown, 500);
+if (!isGameOver) {
+    timer = setInterval(moveDown, 500);
+}

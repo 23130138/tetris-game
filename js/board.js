@@ -1,7 +1,7 @@
 const board = document.querySelector(".board");
 
 const width = 10;
-const height = 20;
+const height = 18;
 
 const cells = [];
 
@@ -20,10 +20,13 @@ function createBoard() {
     }
 }
 
-// Xóa  khối cũ trước khi vẽ ở vi gtri mới.
+// vẽ các khối đã lưu trên bàn
 function drawBoard() {
     for (let i = 0; i < cells.length; i++) {
         cells[i].classList.remove("filled");
+        if (boardData[i] !== null) {
+            cells[i].classList.add("filled");
+        }
     }
 }
 // kiểm tra có thể đặt khối ở vị trí mới ko
