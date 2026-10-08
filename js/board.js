@@ -26,3 +26,27 @@ function drawBoard() {
         cells[i].classList.remove("filled");
     }
 }
+// kiểm tra có thể đặt khối ở vị trí mới ko
+function canMove(piece, nextX, nextY) {
+    for (let y = 0; y < piece.length; y++) {
+        for (let x = 0; x < piece[y].length; x++) {
+            // bỏ qua ô trống trong hình dạng khối
+            if (piece[y][x] === 0) {continue;}
+
+            const boardX = nextX + x;
+            const boardY = nextY + y;
+
+            // không cho ô vượt ra ngoài bàn
+            if (boardX < 0 || boardX >= width || boardY < 0 || boardY >= height) {
+                return false;
+            }
+            const index = boardY * width + boardX;
+
+            // ko cho khối đi vào ô đã bị chiếm
+            if (boardData[index] !== null) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
