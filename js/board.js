@@ -53,3 +53,29 @@ function canMove(piece, nextX, nextY) {
     }
     return true;
 }
+// xóa hàng đầy return số hàng đã xóa
+function clearLines() {
+    let clearedLines = 0;
+
+    for (let y = height - 1; y >= 0; y--) {
+        let isFull = true;
+        for (let x = 0; x < width; x++) {
+            if (boardData[y * width + x] === null) {
+                isFull = false;
+                break;
+            }
+        }
+
+        if (isFull) {
+            // xóa hàng đầy
+            boardData.splice(y * width, width);
+            // thêm hàng trống ở đầu bàn
+            for (let x = 0; x < width; x++) {
+                boardData.unshift(null);
+            }
+            clearedLines++;
+            y++;
+        }
+    }
+    return clearedLines;
+}

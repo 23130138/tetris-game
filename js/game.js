@@ -30,6 +30,8 @@ function moveDown() {
         drawPiece();
     } else {
         lockPiece();
+        const clearedLines = clearLines();
+        addScore(clearedLines);
         drawBoard();
         createPiece();
     }
