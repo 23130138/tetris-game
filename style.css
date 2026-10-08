@@ -38,7 +38,7 @@ body {
 }
 
 .cell.filled {
-    background: red;
+    background: #ffb366;
 }
 
 .buttons {
@@ -51,4 +51,13 @@ body {
     padding: 10px 20px;
     border: none;
     cursor: pointer;
+}
+.levels {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.levels .button {
+    padding: 8px 10px;
 }
