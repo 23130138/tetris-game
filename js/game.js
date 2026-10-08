@@ -1,25 +1,24 @@
-// di chuyển khối sang trái nếu chưa cham
+// di chuyển sang trái
 function moveLeft() {
-    if (currentX > 0) {
+    if (canMove(currentPiece, currentX - 1, currentY)) {
         currentX--;
-        // Xóa  cũ rồi vẽ ở vị trí mới
         drawBoard();
         drawPiece();
     }
 }
 
-// di chuyển khối sang phải nếu chưa chạm
+// di chuyển sang phải
 function moveRight() {
-    if (currentX + currentPiece[0].length < width) {
+    if (canMove(currentPiece, currentX + 1, currentY)) {
         currentX++;
         drawBoard();
         drawPiece();
     }
 }
 
-// Di chuyển khối xuống một hàng nếu chưa chạm đáy.
+// di chuyển xuống
 function moveDown() {
-    if (currentY + currentPiece.length < height) {
+    if (canMove(currentPiece, currentX, currentY + 1)) {
         currentY++;
         drawBoard();
         drawPiece();

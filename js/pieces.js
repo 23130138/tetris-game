@@ -60,7 +60,6 @@ function drawPiece() {
 // Xoay khối 90 độ
 function rotatePiece() {
     const newPiece = [];
-
     for (let x = 0; x < currentPiece[0].length; x++) {
         const row = [];
         for (let y = currentPiece.length - 1; y >= 0; y--) {
@@ -68,12 +67,10 @@ function rotatePiece() {
         }
         newPiece.push(row);
     }
-    currentPiece = newPiece;
-
-    // Nếu khối sau khi xoay vượt mép phải, đưa nó vào lại bàn
-    if (currentX + currentPiece[0].length > width) {
-        currentX = width - currentPiece[0].length;
+    // chỉ đổi hình dạng khi có đủ chỗ để xoay
+    if (canMove(newPiece, currentX, currentY)) {
+        currentPiece = newPiece;
+        drawBoard();
+        drawPiece();
     }
-    drawBoard();
-    drawPiece();
 }
