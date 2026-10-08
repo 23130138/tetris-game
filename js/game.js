@@ -1,5 +1,9 @@
 let isGameOver = false;
 let timer = null;
+let isPlaying = false;
+const startButton = document.querySelector("#start");
+const restartButton = document.querySelector("#restart");
+const exitButton = document.querySelector("#exit");
 
 // di chuyển sang trái
 function moveLeft() {
@@ -21,7 +25,7 @@ function moveRight() {
 
 // di chuyển xuống
 function moveDown() {
-    if (isGameOver) {
+    if (!isPlaying || isGameOver) {
         return;
     }
     if (canMove(currentPiece, currentX, currentY + 1)) {
@@ -35,6 +39,44 @@ function moveDown() {
         drawBoard();
         createPiece();
     }
+}
+// play
+function startGame() {
+    if (isPlaying || isGameOver) {
+        return;
+    }
+    isPlaying = true;
+    createPiece();
+    if (!isGameOver) {
+        timer = setInterval(moveDown, 500);
+    }
+}
+
+// restart
+function restartGame() {
+    clearInterval(timer);
+    timer = null;
+    isPlaying = false;
+    isGameOver = false;
+
+    for (let i = 0; i < boardData.length; i++) {
+        boardData[i] = null;
+    }
+    resetScore();
+    drawBoard();
+    startGame();
+}
+// thoát lượt chơi
+function exitGame() {
+    clearInterval(timer);
+    timer = null;
+    isPlaying = false;
+    isGameOver = false;
+    for (let i = 0; i < boardData.length; i++) {
+        boardData[i] = null;
+    }
+    resetScore();
+    drawBoard();
 }
 
 // điều khiển
@@ -57,8 +99,7 @@ document.addEventListener("keydown", function(event) {
 });
 
 createBoard();
-createPiece();
 
-if (!isGameOver) {
-    timer = setInterval(moveDown, 500);
-}
+startButton.addEventListener("click", startGame);
+restartButton.addEventListener("click", restartGame);
+exitButton.addEventListener("click", exitGame);
