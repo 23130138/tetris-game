@@ -10,29 +10,31 @@
 </head>
 
 <body>
-<div class="game">
-    <h1 class="title">TETRIS</h1>
+    <div class="game">
+        <div class="sidebar">
+            <h1 class="title">TETRIS</h1>
 
-    <div class="info">
-        <p>Score: <span class="score">0</span></p>
-        <p>Level: <span class="level">1</span></p>
+            <div class="info">
+                <p>Score: <span class="score">0</span></p>
+                <p>Level: <span class="level">1</span></p>
+            </div>
+
+            <div class="levels">
+                <button class="button" id="level1">Level 1</button>
+                <button class="button" id="level2">Level 2</button>
+                <button class="button" id="level3">Level 3</button>
+                <button class="button" id="level4">Level 4</button>
+            </div>
+
+            <div class="buttons">
+                <button class="button" id="start">Start</button>
+                <button class="button" id="restart">Restart</button>
+                <button class="button" id="exit">Thoát</button>
+            </div>
+        </div>
+
+        <div class="board"></div>
     </div>
-
-    <div class="levels">
-        <button class="button" id="level1">Level 1</button>
-        <button class="button" id="level2">Level 2</button>
-        <button class="button" id="level3">Level 3</button>
-        <button class="button" id="level4">Level 4</button>
-    </div>
-
-    <div class="board"></div>
-
-    <div class="buttons">
-        <button class="button" id="start">Start</button>
-        <button class="button" id="restart">Restart</button>
-        <button class="button" id="exit">Thoát</button>
-    </div>
-</div>
 
 <script src="js/board.js"></script>
 <script src="js/pieces.js"></script>

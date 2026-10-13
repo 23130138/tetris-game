@@ -7,17 +7,26 @@ body {
 }
 
 .game {
-    width: 300px;
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    width: 502px;
     margin: 30px auto;
 }
 
+.sidebar {
+    width: 170px;
+    flex-shrink: 0;
+    text-align: left;
+}
+
 .title {
-    margin-bottom: 20px;
+    margin: 0 0 20px;
 }
 
 .info {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
 .board {
@@ -43,8 +52,9 @@ body {
 
 .buttons {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: 10px;
+    margin-top: 20px;
 }
 
 .button {
@@ -53,11 +63,14 @@ body {
     cursor: pointer;
 }
 .levels {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 5px;
 }
 
 .levels .button {
     padding: 8px 10px;
+}
+.cell.blocked {
+    background: #888;
 }

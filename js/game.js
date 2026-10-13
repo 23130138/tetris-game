@@ -46,6 +46,8 @@ function startGame() {
         return;
     }
     isPlaying = true;
+    setupLevel();
+    drawBoard();
     createPiece();
     if (!isGameOver) {
         timer = setInterval(moveDown, 500);

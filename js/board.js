@@ -24,7 +24,11 @@ function createBoard() {
 function drawBoard() {
     for (let i = 0; i < cells.length; i++) {
         cells[i].classList.remove("filled");
-        if (boardData[i] !== null) {
+        cells[i].classList.remove("blocked");
+
+        if (boardData[i] === "block") {
+            cells[i].classList.add("blocked");
+        } else if (boardData[i] !== null) {
             cells[i].classList.add("filled");
         }
     }
