@@ -3,43 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Simple Tetris</title>
-
+    <title>Tetris</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div class="game">
+    <main class="game">
         <div class="sidebar">
             <h1 class="title">TETRIS</h1>
-
             <div class="info">
-                <p>Score: <span class="score">0</span></p>
-                <p>Level: <span class="level">1</span></p>
+                <p>Điểm: <span class="score">0</span></p>
+                <p>Màn: <span class="level">1</span></p>
             </div>
-
-            <div class="levels">
-                <button class="button" id="level1">Level 1</button>
-                <button class="button" id="level2">Level 2</button>
-                <button class="button" id="level3">Level 3</button>
-                <button class="button" id="level4">Level 4</button>
+            <div class="levels" aria-label="chọn màn chơi">
+                <button class="button" data-level="1">1 · Bình thường</button>
+                <button class="button" data-level="2">2 · Ô chặn</button>
+                <button class="button" data-level="3">3 · Phép màu</button>
+                <button class="button" disabled>4 · Dịch ô<br><small>Chưa mở</small></button>
+                <button class="button" disabled>5 · Hai chiều<br><small>Chưa mở</small></button>
+                <button class="button" disabled>6 · Ăn màu<br><small>Chưa mở</small></button>
             </div>
-
+            <p id="level-guide"></p>
             <div class="buttons">
-                <button class="button" id="start">Start</button>
-                <button class="button" id="restart">Restart</button>
+                <button class="button play-button" id="start">▶ CHƠI</button>
+                <button class="button" id="restart">Chơi lại</button>
                 <button class="button" id="exit">Thoát</button>
             </div>
         </div>
-
-        <div class="board"></div>
-    </div>
-
-<script src="js/board.js"></script>
-<script src="js/pieces.js"></script>
-<script src="js/score.js"></script>
-<script src="js/levels.js"></script>
-<script src="js/game.js"></script>
+        <div class="board" aria-label="bàn chơi tetris"></div>
+    </main>
+    <script src="js/board.js"></script>
+    <script src="js/pieces.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/game.js"></script>
 </body>
 </html>

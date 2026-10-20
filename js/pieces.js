@@ -23,6 +23,7 @@ const pieces = {
 };
 
 let currentPiece;
+let currentPieceName;
 let currentX; // cột
 let currentY; // cow
 
@@ -32,16 +33,16 @@ function createPiece() {
     const randomIndex = Math.floor(Math.random() * names.length);
     const randomName = names[randomIndex];
 
+    currentPieceName = randomName;
+    hasTransformed = false;
+    isReversed = false;
     currentPiece = pieces[randomName];
     currentX = Math.floor((width - currentPiece[0].length) / 2);
     currentY = 0;
 
     // kết thúc nếu ko còn chỗ đặt khối ms
     if (!canMove(currentPiece, currentX, currentY)) {
-        isGameOver = true;
-        clearInterval(timer);
-        drawBoard();
-        alert("Game over");
+        endGame();
         return;
     }
     drawPiece();
@@ -65,6 +66,7 @@ function drawPiece() {
 
 // Xoay khối 90 độ
 function rotatePiece() {
+    if (!isPlaying || isGameOver) { return; }
     const newPiece = [];
     for (let x = 0; x < currentPiece[0].length; x++) {
         const row = [];
@@ -76,8 +78,7 @@ function rotatePiece() {
     // chỉ đổi hình dạng khi có đủ chỗ để xoay
     if (canMove(newPiece, currentX, currentY)) {
         currentPiece = newPiece;
-        drawBoard();
-        drawPiece();
+        renderPiece();
     }
 }
 
