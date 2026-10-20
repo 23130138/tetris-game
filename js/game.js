@@ -16,7 +16,7 @@ function renderPiece() {
 
 // di chuyển ngang khi đang chơi
 function moveLeft() {
-    if (!isPlaying || isGameOver) { return; }
+    if (!isPlaying || isGameOver || isResolving) { return; }
     const direction = isReversed ? 1 : -1;
     if (canMove(currentPiece, currentX + direction, currentY)) {
         currentX += direction;
@@ -25,7 +25,7 @@ function moveLeft() {
 }
 
 function moveRight() {
-    if (!isPlaying || isGameOver) { return; }
+    if (!isPlaying || isGameOver || isResolving) { return; }
     const direction = isReversed ? -1 : 1;
     if (canMove(currentPiece, currentX + direction, currentY)) {
         currentX += direction;
@@ -35,12 +35,16 @@ function moveRight() {
 
 // lưu khối và tính điểm trước khi sinh khối tiếp theo
 function moveDown() {
-    if (!isPlaying || isGameOver) { return; }
-    if (canMove(currentPiece, currentX, currentY + 1)) {
-        currentY++;
+    if (!isPlaying || isGameOver || isResolving) { return; }
+    if (canMove(currentPiece, currentX, currentY + fallDirection)) {
+        currentY += fallDirection;
         renderPiece();
     } else {
         lockPiece();
+        if (currentLevel === 6) {
+            resolveColorBoard();
+            return;
+        }
         addScore(clearLines());
         shiftBoardAfterLock();
         mirrorBoardAfterLock();
@@ -51,6 +55,9 @@ function moveDown() {
 
 // dừng bộ đếm và hiển thị điểm cuối
 function endGame() {
+    clearTimeout(colorTimer);
+    colorTimer = null;
+    isResolving = false;
     clearMirrorWarning();
     clearInterval(timer);
     timer = null;
@@ -63,6 +70,10 @@ function endGame() {
 
 // xóa lượt cũ và đưa màn đã chọn về trạng thái chờ
 function resetGame() {
+    clearTimeout(colorTimer);
+    colorTimer = null;
+    isResolving = false;
+    currentPieceColors = [];
     clearInterval(timer);
     timer = null;
     isPlaying = false;
@@ -111,7 +122,7 @@ function exitGame() {
  document.addEventListener("keydown", function(event) {
     if (!["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"].includes(event.key)) { return; }
     event.preventDefault();
-    if (!isPlaying || isGameOver) { return; }
+    if (!isPlaying || isGameOver || isResolving) { return; }
     if (event.key === "ArrowLeft") { moveLeft(); }
     if (event.key === "ArrowRight") { moveRight(); }
     if (event.key === "ArrowDown") { moveDown(); }

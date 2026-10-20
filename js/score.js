@@ -12,3 +12,8 @@ function resetScore() {
     score = 0;
     scoreElement.textContent = score;
 }
+// tính điểm theo số ô màu đã xóa, không nhân theo hàng
+function addColorScore(clearedCells) {
+    score += clearedCells * 10;
+    scoreElement.textContent = score;
+}

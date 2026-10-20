@@ -10,11 +10,14 @@ let lockedPieceCount = 0;
 let shiftDirection = -1;
 let mirrorPieceCount = 0;
 let mirrorRows = [];
+let fallDirection = 1;
 const levelGuides = ["",
     "Xếp khối để lấp đầy và xóa hàng",
     "Ô xám là vật cản, được xóa cùng hàng đầy",
     "Ô ★ đổi hình  Ô ? đảo trái/phải",
-    "Mỗi 3 khối dịch ngang. Mỗi 5 khối soi gương 3 hàng ngẫu nhiên, viền xám báo trước"];
+    "Mỗi 3 khối dịch ngang. Mỗi 5 khối soi gương 3 hàng ngẫu nhiên",
+    "Rơi ngẫu nhiên hai phía. Xóa 1 hàng đầy giúp dọn 1 hàng sát giữa phía đối diện",
+    "Ghép ít nhất 4 ô cùng màu theo ngang, dọc hoặc chéo. Mỗi ô xóa: 10 điểm"];
 
 // cập nhật màn và hướng dẫn đang chọn
 function updateLevel() {
@@ -36,6 +39,8 @@ function selectLevel(level) {
 
 // đặt dữ liệu riêng của màn trước khi sinh khối
 function setupLevel() {
+    fallDirection = 1;
+    board.classList.toggle("two-way", currentLevel === 5);
     mirrorPieceCount = 0;
     clearMirrorWarning();
     lockedPieceCount = 0;
