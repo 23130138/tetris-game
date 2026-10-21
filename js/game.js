@@ -42,6 +42,8 @@ function moveDown() {
     } else {
         lockPiece();
         addScore(clearLines());
+        shiftBoardAfterLock();
+        mirrorBoardAfterLock();
         drawBoard();
         createPiece();
     }
@@ -49,6 +51,7 @@ function moveDown() {
 
 // dừng bộ đếm và hiển thị điểm cuối
 function endGame() {
+    clearMirrorWarning();
     clearInterval(timer);
     timer = null;
     isPlaying = false;

@@ -6,12 +6,15 @@ const magicCells = [{ x: 3, y: 3 }];
 const reverseCell = { x: 6, y: 6 };
 let isReversed = false;
 let hasTransformed = false;
-const levelGuides = [
-    "",
+let lockedPieceCount = 0;
+let shiftDirection = -1;
+let mirrorPieceCount = 0;
+let mirrorRows = [];
+const levelGuides = ["",
     "Xếp khối để lấp đầy và xóa hàng",
     "Ô xám là vật cản, được xóa cùng hàng đầy",
-    "Ô ★ đổi hình tối đa một lần mỗi khối. Ô ? đảo trái/phải đến khi khối nằm lại"
-];
+    "Ô ★ đổi hình  Ô ? đảo trái/phải",
+    "Mỗi 3 khối dịch ngang. Mỗi 5 khối soi gương 3 hàng ngẫu nhiên, viền xám báo trước"];
 
 // cập nhật màn và hướng dẫn đang chọn
 function updateLevel() {
@@ -33,6 +36,10 @@ function selectLevel(level) {
 
 // đặt dữ liệu riêng của màn trước khi sinh khối
 function setupLevel() {
+    mirrorPieceCount = 0;
+    clearMirrorWarning();
+    lockedPieceCount = 0;
+    shiftDirection = -1;
     hasTransformed = false;
     isReversed = false;
     if (currentLevel === 2) {
@@ -49,6 +56,73 @@ function setupLevel() {
         }
         cells[reverseCell.y * width + reverseCell.x].classList.add("reverse");
     }
+}
+
+// dịch các hàng sau mỗi ba khối và giữ nguyên số ô
+function shiftBoardAfterLock() {
+    if (currentLevel !== 4) { return; }
+    lockedPieceCount++;
+    if (lockedPieceCount < 3) { return; }
+    lockedPieceCount = 0;
+    for (let y = 0; y < height; y++) {
+        const row = boardData.slice(y * width, (y + 1) * width);
+        for (let x = 0; x < width; x++) {
+            const nextX = (x + shiftDirection + width) % width;
+            boardData[y * width + nextX] = row[x];
+        }
+    }
+    shiftDirection = -shiftDirection;
+}
+
+// xóa vùng báo trước khi lật hoặc kết thúc lượt chơi
+function clearMirrorWarning() {
+    mirrorRows = [];
+    for (const cell of cells) {
+        cell.classList.remove("mirror-warning");
+    }
+}
+
+// chọn tối đa ba hàng có ô, không trùng nhau và không cần liền nhau
+function prepareMirrorWarning() {
+    clearMirrorWarning();
+    const possibleRows = [];
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            if (boardData[y * width + x] !== null) {
+                possibleRows.push(y);
+                break;
+            }
+        }
+    }
+    while (mirrorRows.length < 3 && possibleRows.length > 0) {
+        const index = Math.floor(Math.random() * possibleRows.length);
+        const y = possibleRows.splice(index, 1)[0];
+        mirrorRows.push(y);
+        for (let x = 0; x < width; x++) {
+            cells[y * width + x].classList.add("mirror-warning");
+        }
+    }
+}
+
+// lật trái phải từng hàng đã báo trước sau mỗi năm khối
+function mirrorBoardAfterLock() {
+    if (currentLevel !== 4) { return; }
+    mirrorPieceCount++;
+    if (mirrorPieceCount === 4) {
+        prepareMirrorWarning();
+    }
+    if (mirrorPieceCount < 5) { return; }
+    for (const y of mirrorRows) {
+        for (let x = 0; x < width / 2; x++) {
+            const left = y * width + x;
+            const right = y * width + width - 1 - x;
+            const value = boardData[left];
+            boardData[left] = boardData[right];
+            boardData[right] = value;
+        }
+    }
+    mirrorPieceCount = 0;
+    clearMirrorWarning();
 }
 
 // kiểm tra khối có chạm dấu kích hoạt hay không
