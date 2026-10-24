@@ -1,6 +1,7 @@
 let isGameOver = false;
 let timer = null;
 let isPlaying = false;
+let isTransitioning = false;
 const startButton = document.querySelector("#start");
 const restartButton = document.querySelector("#restart");
 const exitButton = document.querySelector("#exit");
@@ -48,6 +49,7 @@ function moveDown() {
         addScore(clearLines());
         shiftBoardAfterLock();
         mirrorBoardAfterLock();
+        if (checkAutoLevel()) { return; }
         drawBoard();
         createPiece();
     }
@@ -70,6 +72,9 @@ function endGame() {
 
 // xóa lượt cũ và đưa màn đã chọn về trạng thái chờ
 function resetGame() {
+    isTransitioning = false;
+    if (isAutoMode) { currentLevel = 1; }
+    startButton.textContent = "▶ CHƠI";
     clearTimeout(colorTimer);
     colorTimer = null;
     isResolving = false;
@@ -89,11 +94,11 @@ function resetGame() {
     updateLevel();
 }
 
-// bắt đầu một lượt duy nhất ở màn đang chọn
-function startGame() {
-    if (isPlaying || isGameOver) { return; }
-    resetGame();
+// chạy màn hiện tại, dùng chung cho bắt đầu và tiếp tục
+function beginLevel() {
+    isTransitioning = false;
     isPlaying = true;
+    startButton.textContent = "▶ CHƠI";
     startButton.disabled = true;
     updateLevel();
     createPiece();
@@ -102,7 +107,38 @@ function startGame() {
     }
 }
 
-// chơi lại màn đã chọn với điểm bằng không
+// bắt đầu lượt mới hoặc tiếp tục màn vừa chuyển mà không xóa điểm
+function startGame() {
+    if (isPlaying || isGameOver) { return; }
+    if (!isTransitioning) { resetGame(); }
+    beginLevel();
+}
+
+// chỉ tăng một màn mỗi lần, giữ tổng điểm và dừng ở màn sáu
+function checkAutoLevel() {
+    if (!isAutoMode || currentLevel >= 6 || score < currentLevel * 500) { return false; }
+    clearInterval(timer);
+    timer = null;
+    clearTimeout(colorTimer);
+    colorTimer = null;
+    isResolving = false;
+    isPlaying = false;
+    isTransitioning = true;
+    currentPiece = null;
+    currentPieceColors = [];
+    currentLevel++;
+    for (let i = 0; i < boardData.length; i++) {
+        boardData[i] = null;
+    }
+    setupLevel();
+    drawBoard();
+    updateLevel();
+    startButton.textContent = "Tiếp tục · Màn " + currentLevel;
+    startButton.disabled = false;
+    return true;
+}
+
+// chơi lại từ màn đầu trong auto hoặc màn đang chọn khi chơi riêng
 function restartGame() {
     resetGame();
     startGame();

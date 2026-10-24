@@ -1,4 +1,6 @@
 let currentLevel = 1;
+let isAutoMode = false;
+const autoButton = document.querySelector("#auto");
 const levelElement = document.querySelector(".level");
 const levelButtons = document.querySelectorAll("[data-level]");
 const levelGuide = document.querySelector("#level-guide");
@@ -23,16 +25,20 @@ const levelGuides = ["",
 function updateLevel() {
     levelElement.textContent = currentLevel;
     levelGuide.textContent = levelGuides[currentLevel];
+    autoButton.classList.toggle("selected", isAutoMode);
+    autoButton.setAttribute("aria-pressed", String(isAutoMode));
+    autoButton.disabled = isPlaying || isTransitioning;
     for (const button of levelButtons) {
-        button.classList.toggle("selected", Number(button.dataset.level) === currentLevel);
-        button.setAttribute("aria-pressed", String(Number(button.dataset.level) === currentLevel));
-        button.disabled = isPlaying;
+        button.classList.toggle("selected", !isAutoMode && Number(button.dataset.level) === currentLevel);
+        button.setAttribute("aria-pressed", String(!isAutoMode && Number(button.dataset.level) === currentLevel));
+        button.disabled = isPlaying || isTransitioning;
     }
 }
 
 // chỉ chọn màn khi lượt chơi đã dừng
 function selectLevel(level) {
-    if (isPlaying) { return; }
+    if (isPlaying || isTransitioning) { return; }
+    isAutoMode = false;
     currentLevel = level;
     resetGame();
 }
@@ -170,3 +176,12 @@ for (const button of levelButtons) {
         selectLevel(Number(button.dataset.level));
     });
 }
+
+// chọn auto từ màn đầu, giữ các nút màn riêng cho chế độ chơi độc lập
+function selectAutoMode() {
+    if (isPlaying || isTransitioning) { return; }
+    isAutoMode = true;
+    resetGame();
+}
+
+autoButton.addEventListener("click", selectAutoMode);
